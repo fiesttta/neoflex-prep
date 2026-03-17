@@ -4,21 +4,47 @@ class VideoCard:
     def __init__(self, model, memory, temperature):
         self.model = model
         self.memory = memory
-        self.temperature = temperature
+        self.__temperature = temperature
 
     # Это метод (функция, которая принадлежит классу)
     def cool_down(self):
         print(f"Вентиляторы раскручиваются... Температура {self.model} падает!")
-        self.temperature -= 10
+        self.__temperature -= 10
+
+    def overclock(self):
+        print(f"Внимание! Разгоняем {self.model}")
+        self.__temperature += 20
+    
+    def get_temperature(self):
+        return self.__temperature
+
+    def set_temperature(self, new_temp):
+        if 120 < new_temp or new_temp < 20:
+            print("Ошибка: недопустимая температура!")
+        else: 
+            self.__temperature = new_temp
 
 # Создаем конкретный объект (твою видеокарту) по "чертежу" VideoCard
 my_gpu = VideoCard(model="RTX 3060 Ti", memory=8, temperature=60)
 
 # Проверяем атрибуты
-print(f"Моя видеокарта: {my_gpu.model}, Температура: {my_gpu.temperature} градусов.")
+print(f"Моя видеокарта: {my_gpu.model}, Температура: {my_gpu.get_temperature()} градусов.")
 
 # Вызываем метод
 my_gpu.cool_down()
 
+
 # Проверяем температуру после охлаждения
-print(f"Температура после охлаждения: {my_gpu.temperature} градусов.")
+print(f"Температура после охлаждения: {my_gpu.get_temperature()} градусов.")
+
+# Вызываем метод разгона
+my_gpu.overclock()
+
+# Проверяем температуру после разгона
+print(f"Температура после разгона: {my_gpu.get_temperature()} градусов")
+
+# Пытаемся сжечь видеокарту
+my_gpu.set_temperature(500)
+
+# Проверям температуру (смогли ли сжечь)
+print(f"Текущая температура {my_gpu.get_temperature()} градусов.")
