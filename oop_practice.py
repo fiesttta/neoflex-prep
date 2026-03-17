@@ -58,6 +58,10 @@ class IntegratedGPU(VideoCard):
     def share_ram(self):
         print(f"Встроенная графика {self.model} забирает часть ОЗУ под свои нужды!")
 
+    def cool_down(self):
+        print(f"Снижаем частоты процессора. Температура {self.model} падает!")
+        self.set_temperature(self.get_temperature() - 5)
+
 # Создаем конкретный объект (встроенную видеокарту) по "чертежу" IntegratedGPU
 my_laptop_gpu = IntegratedGPU(model="AMD Radeon Vega", memory=0, temperature= 63)
 
