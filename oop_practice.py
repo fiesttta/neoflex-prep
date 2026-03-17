@@ -48,3 +48,24 @@ my_gpu.set_temperature(500)
 
 # Проверям температуру (смогли ли сжечь)
 print(f"Текущая температура {my_gpu.get_temperature()} градусов.")
+
+# Новый класс наследник от VideoCard
+class IntegratedGPU(VideoCard):
+    def __init__(self, model, memory, temperature):
+        super().__init__(model, memory, temperature)
+
+    # Метод забирающий часть ОЗУ
+    def share_ram(self):
+        print(f"Встроенная графика {self.model} забирает часть ОЗУ под свои нужды!")
+
+# Создаем конкретный объект (встроенную видеокарту) по "чертежу" IntegratedGPU
+my_laptop_gpu = IntegratedGPU(model="AMD Radeon Vega", memory=0, temperature= 63)
+
+# Охлаждаем родительским методом
+my_laptop_gpu.cool_down()
+
+# Проверяем температуру после охлаждения
+print(f"Температура после охлаждения: {my_laptop_gpu.get_temperature()} градусов.")
+
+# Вызываем метод
+my_laptop_gpu.share_ram()
