@@ -1,8 +1,14 @@
 from fastapi import FastAPI
 import sqlite3
+from pydantic import BaseModel # импорт класса для строгой проверки данных
 
 # создание веб сервера
 app = FastAPI()
+
+# схема ожидаемых данных
+class NewProduct(BaseModel):
+    title: str
+    price: float
 
 # URL по которому будет доступна функция
 @app.get("/")
@@ -30,3 +36,21 @@ def get_products():
     connection.close()
 
     return {"products": products_list}
+
+    # POST запрос
+@app.post("/api/products")
+def add_product(product: NewProduct):
+    # подключаемся к бд
+    connection = sqlite3.connect("pr_store.db")
+    cursor = connection.cursor()
+
+    # безопасный INSERT 
+    cursor.execute('''
+    INSERT INTO api_products (title, price)
+    VALUES (?, ?)
+    ''', (product.title, product.price))
+
+    connection.commit()
+    connection.close()
+
+    return {"message": f"Товар '{product.title}' успешно добавлен в базу."}
